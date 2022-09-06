@@ -58,6 +58,18 @@ pub mod net {
     }
 }
 
+pub mod scenery {
+    pub mod v0 {
+        tonic::include_proto!("dcs.scenery.v0");
+    }
+}
+
+pub mod r#static {
+    pub mod v0 {
+        tonic::include_proto!("dcs.r#static.v0");
+    }
+}
+
 pub mod timer {
     pub mod v0 {
         tonic::include_proto!("dcs.timer.v0");

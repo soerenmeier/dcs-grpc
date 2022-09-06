@@ -148,3 +148,14 @@ GRPC.methods.getUnitUpdate = function(params)
     velocity = GRPC.exporters.vector(unit:getVelocity()),
   })
 end
+
+GRPC.methods.unitDestroy = function(params)
+  local unit = Unit.getByName(params.name)
+  if unit == nil then
+    return GRPC.errorNotFound("unit `" .. tostring(params.name) .. "` does not exist")
+  end
+
+  unit:destroy()
+
+  return GRPC.success({})
+end

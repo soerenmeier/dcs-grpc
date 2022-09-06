@@ -17,6 +17,8 @@ use stubs::hook::v0::hook_service_server::HookServiceServer;
 use stubs::mission::v0::mission_service_server::MissionServiceServer;
 use stubs::mission::v0::StreamEventsResponse;
 use stubs::net::v0::net_service_server::NetServiceServer;
+use stubs::scenery::v0::scenery_service_server::SceneryServiceServer;
+use stubs::r#static::v0::static_service_server::StaticServiceServer;
 use stubs::timer::v0::timer_service_server::TimerServiceServer;
 use stubs::trigger::v0::trigger_service_server::TriggerServiceServer;
 use stubs::unit::v0::unit_service_server::UnitServiceServer;
@@ -179,6 +181,8 @@ async fn try_run(
         .add_service(HookServiceServer::new(hook_rpc))
         .add_service(MissionServiceServer::new(mission_rpc.clone()))
         .add_service(NetServiceServer::new(mission_rpc.clone()))
+        .add_service(SceneryServiceServer::new(mission_rpc.clone()))
+        .add_service(StaticServiceServer::new(mission_rpc.clone()))
         .add_service(TimerServiceServer::new(mission_rpc.clone()))
         .add_service(TriggerServiceServer::new(mission_rpc.clone()))
         .add_service(UnitServiceServer::new(mission_rpc.clone()))
