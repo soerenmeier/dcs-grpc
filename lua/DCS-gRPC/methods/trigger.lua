@@ -204,3 +204,14 @@ GRPC.methods.signalFlare = function(params)
 
   return GRPC.success({})
 end
+
+GRPC.methods.getZone = function(params)
+  local zone = trigger.misc.getZone(params.name)
+  if zone == nil or zone.point == nil then
+    return GRPC.errorNotFound("zone `" .. tostring(params.name) .. "` does not exist")
+  end
+
+  return GRPC.success({
+    position = GRPC.exporters.position(zone.point)
+  })
+end

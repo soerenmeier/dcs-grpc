@@ -60,6 +60,9 @@ service TriggerService {
 
   // https://wiki.hoggitworld.com/view/DCS_func_signalFlare
   rpc SignalFlare(SignalFlareRequest) returns (SignalFlareResponse) {}
+
+  // https://wiki.hoggitworld.com/view/DCS_func_getZone
+  rpc GetZone(GetZoneRequest) returns (GetZoneResponse) {}
 }
 
 message OutTextRequest {
@@ -215,6 +218,15 @@ message SignalFlareRequest {
 }
 
 message SignalFlareResponse {
+}
+
+message GetZoneRequest {
+  string name = 1;
+}
+
+message GetZoneResponse {
+  dcs.common.v0.Position position = 1;
+  // todo add more values
 }
 
 enum LineType {
