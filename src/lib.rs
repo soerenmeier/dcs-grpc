@@ -252,6 +252,23 @@ pub enum Error {
     SerializeParams(#[source] mlua::Error),
 }
 
+fn log_err<'lua, A, R, F>(
+    lua: &'lua Lua,
+    f: F
+) -> mlua::Result<Function<'lua>>
+where
+    A: FromLuaMulti<'lua>,
+    R: ToLuaMulti<'lua>,
+    F: 'static + Send + Fn(&'lua Lua, A) -> mlua::Result<R>
+{
+    lua.create_function(move |lua, a| {
+        f(lua, a).map_err(|e| {
+            log::error!("{}", e);
+            e
+        })
+    })
+}
+
 #[cfg(feature = "hot-reload")]
 #[mlua::lua_module]
 pub fn dcs_grpc_hot_reload(lua: &Lua) -> LuaResult<LuaTable> {
@@ -276,16 +293,16 @@ pub fn dcs_grpc_hot_reload(lua: &Lua) -> LuaResult<LuaTable> {
 #[mlua::lua_module]
 pub fn dcs_grpc(lua: &Lua) -> LuaResult<LuaTable> {
     let exports = lua.create_table()?;
-    exports.set("start", lua.create_function(start)?)?;
-    exports.set("stop", lua.create_function(stop)?)?;
-    exports.set("next", lua.create_function(next)?)?;
-    exports.set("event", lua.create_function(event)?)?;
-    exports.set("simulationFrame", lua.create_function(simulation_frame)?)?;
-    exports.set("tts", lua.create_function(tts)?)?;
-    exports.set("logError", lua.create_function(log_error)?)?;
-    exports.set("logWarning", lua.create_function(log_warning)?)?;
-    exports.set("logInfo", lua.create_function(log_info)?)?;
-    exports.set("logDebug", lua.create_function(log_debug)?)?;
+    exports.set("start", log_err(lua, start)?)?;
+    exports.set("stop", log_err(lua, stop)?)?;
+    exports.set("next", log_err(lua, next)?)?;
+    exports.set("event", log_err(lua, event)?)?;
+    exports.set("simulationFrame", log_err(lua, simulation_frame)?)?;
+    exports.set("tts", log_err(lua, tts)?)?;
+    exports.set("logError", log_err(lua, log_error)?)?;
+    exports.set("logWarning", log_err(lua, log_warning)?)?;
+    exports.set("logInfo", log_err(lua, log_info)?)?;
+    exports.set("logDebug", log_err(lua, log_debug)?)?;
     Ok(exports)
 }
 
