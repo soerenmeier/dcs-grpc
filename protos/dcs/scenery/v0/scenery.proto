@@ -1,0 +1,19 @@
+syntax = "proto3";
+package dcs.scenery.v0;
+import "dcs/common/v0/common.proto";
+option csharp_namespace = "RurouniJones.Dcs.Grpc.V0.Scenery";
+option go_package = "github.com/DCS-gRPC/go-bindings/dcs/v0/scenery";
+
+// https://wiki.hoggitworld.com/view/DCS_Class_Scenery_Object
+service SceneryService {
+  // https://wiki.hoggitworld.com/view/DCS_func_destroy
+  rpc Destroy(DestroyRequest) returns (DestroyResponse) {}
+}
+
+message DestroyRequest {
+  // zone needs to be spherical
+  string search_zone = 1;
+  repeated uint32 object_ids = 2;
+}
+
+message DestroyResponse {}

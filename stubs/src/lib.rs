@@ -12,6 +12,8 @@ pub mod group;
 pub mod hook;
 pub mod mission;
 pub mod net;
+pub mod scenery;
+pub mod r#static;
 pub mod timer;
 pub mod trigger;
 pub mod tts;

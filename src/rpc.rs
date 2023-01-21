@@ -17,6 +17,8 @@ mod group;
 mod hook;
 mod mission;
 mod net;
+mod scenery;
+mod r#static;
 mod timer;
 mod trigger;
 mod tts;
